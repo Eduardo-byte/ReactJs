@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const API_URL = 'https://minhastarefas-api.herokuapp.com/tarefas';
-const headers = { 'x-tenant-id' : 'eduardo@gmail.com' }; 
+//const headers = { 'x-tenant-id' : 'eduardo@gmail.com' }; 
 
 const Dashboard = () => {
 
@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   const listTasks = () => {
     axios.get(API_URL , {
-      headers : headers
+      headers : { 'x-tenant-id' : localStorage.getItem('User_logged') }
     }).then(response => {
       const listOfTasks = response.data
       console.log(listOfTasks)
