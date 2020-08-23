@@ -130,53 +130,66 @@ const SignIn = props => {
 
   const classes = useStyles();
 
-  const [formState, setFormState] = useState({
-    isValid: false,
-    values: {},
-    touched: {},
-    errors: {}
-  });
+  const [email , setEmail] = useState('')
 
-  useEffect(() => {
-    const errors = validate(formState.values, schema);
-
-    setFormState(formState => ({
-      ...formState,
-      isValid: errors ? false : true,
-      errors: errors || {}
-    }));
-  }, [formState.values]);
-
-  const handleBack = () => {
-    history.goBack();
-  };
-
-  const handleChange = event => {
-    event.persist();
-
-    setFormState(formState => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]:
-          event.target.type === 'checkbox'
-            ? event.target.checked
-            : event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
-    }));
-  };
 
   const handleSignIn = event => {
     event.preventDefault();
+    localStorage.setItem('User_logged' , email)
     history.push('/');
   };
 
-  const hasError = field =>
-    formState.touched[field] && formState.errors[field] ? true : false;
+
+
+  // const [formState, setFormState] = useState({
+  //   isValid: false,
+  //   values: {},
+  //   touched: {},
+  //   errors: {}
+  // });
+
+
+
+  // useEffect(() => {
+  //   const errors = validate(formState.values, schema);
+
+
+
+  //   setFormState(formState => ({
+  //     ...formState,
+  //     isValid: errors ? false : true,
+  //     errors: errors || {}
+  //   }));
+  // }, [formState.values]);
+
+  // const handleBack = () => {
+  //   history.goBack();
+  // };
+
+
+
+  // const handleChange = event => {
+  //   event.persist();
+
+  //   setFormState(formState => ({
+  //     ...formState,
+  //     values: {
+  //       ...formState.values,
+  //       [event.target.name]:
+  //         event.target.type === 'checkbox'
+  //           ? event.target.checked
+  //           : event.target.value
+  //     },
+  //     touched: {
+  //       ...formState.touched,
+  //       [event.target.name]: true
+  //     }
+  //   }));
+  // };
+
+
+  // const hasError = field =>
+  //   formState.touched[field] && formState.errors[field] ? true : false;
 
   return (
     <div className={classes.root}>
@@ -223,9 +236,11 @@ const SignIn = props => {
         >
           <div className={classes.content}>
             <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
+
+              {/* <IconButton onClick={handleBack}>
                 <ArrowBackIcon />
-              </IconButton>
+              </IconButton> */}
+
             </div>
             <div className={classes.contentBody}>
               <form
@@ -236,15 +251,16 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  Login
                 </Typography>
                 <Typography
                   color="textSecondary"
                   gutterBottom
                 >
-                  Sign in with social media
+                  {/* Sign in with social media */}
                 </Typography>
-                <Grid
+
+                {/* <Grid
                   className={classes.socialButtons}
                   container
                   spacing={2}
@@ -270,30 +286,35 @@ const SignIn = props => {
                       Login with Google
                     </Button>
                   </Grid>
-                </Grid>
+                </Grid> */}
+
                 <Typography
                   align="center"
                   className={classes.sugestion}
                   color="textSecondary"
                   variant="body1"
                 >
-                  or login with email address
+                  Login with your email address
                 </Typography>
+
                 <TextField
                   className={classes.textField}
-                  error={hasError('email')}
+                  // error={hasError('email')}
                   fullWidth
-                  helperText={
-                    hasError('email') ? formState.errors.email[0] : null
-                  }
+                  // helperText={
+                  //   hasError('email') ? formState.errors.email[0] : null
+                  // }
                   label="Email address"
                   name="email"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.email || ''}
+                  // onChange={handleChange}
+                  type="email"
+                  required
+                  value={email}
+                  onChange={event => setEmail(event.target.value)}
                   variant="outlined"
                 />
-                <TextField
+
+                {/* <TextField
                   className={classes.textField}
                   error={hasError('password')}
                   fullWidth
@@ -306,19 +327,21 @@ const SignIn = props => {
                   type="password"
                   value={formState.values.password || ''}
                   variant="outlined"
-                />
+                /> */}
+
                 <Button
                   className={classes.signInButton}
                   color="primary"
-                  disabled={!formState.isValid}
+                  // disabled={!formState.isValid}
                   fullWidth
                   size="large"
                   type="submit"
                   variant="contained"
                 >
-                  Sign in now
+                  Login
                 </Button>
-                <Typography
+
+                {/* <Typography
                   color="textSecondary"
                   variant="body1"
                 >
@@ -330,7 +353,8 @@ const SignIn = props => {
                   >
                     Sign up
                   </Link>
-                </Typography>
+                </Typography> */}
+
               </form>
             </div>
           </div>

@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     backgroundColor: theme.palette.error.main,
     height: 56,
-    width: 56
+    width: 56,
   },
   icon: {
     height: 32,
@@ -41,9 +41,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Budget = props => {
-  const { className, ...rest } = props;
+  const { className, tasks , ...rest } = props;
 
   const classes = useStyles();
+
+  var totalOfTasksPending = 0;
+  for( var x = 0 ; x < tasks.length ; x ++){
+    if(tasks[x].done == false){
+      var totalOfTasksPending = totalOfTasksPending + 1;
+      console.log(totalOfTasksPending);
+    }
+  }
 
   return (
     <Card
@@ -62,9 +70,9 @@ const Budget = props => {
               gutterBottom
               variant="body2"
             >
-              BUDGET
+             Total Tasks Pending
             </Typography>
-            <Typography variant="h3">$24,000</Typography>
+            <Typography variant="h3">{totalOfTasksPending}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
@@ -93,7 +101,8 @@ const Budget = props => {
 };
 
 Budget.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  tasks: PropTypes.array.isRequired
 };
 
 export default Budget;

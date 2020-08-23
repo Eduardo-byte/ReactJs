@@ -12,9 +12,13 @@ import {
   Typography
 } from '@material-ui/core';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+import BookIcon from '@material-ui/icons/Book';
+import WorkIcon from '@material-ui/icons/Work';
 import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import TabletMacIcon from '@material-ui/icons/TabletMac';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import CloudIcon from '@material-ui/icons/Cloud';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,15 +43,38 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersByDevice = props => {
-  const { className, ...rest } = props;
+  const { className, tasks,  ...rest } = props;
 
   const classes = useStyles();
   const theme = useTheme();
 
+  var workCategorie = 0;
+  var studyCategorie = 0;
+  var personalCategorie = 0;
+  var othersCategorie = 0;
+  for( var x = 0 ; x < tasks.length ; x ++){
+    if(tasks[x].categoria == "TRABALHO" ){
+      var workCategorie = workCategorie + 1;
+      console.log(workCategorie);
+    }
+    if(tasks[x].categoria == "ESTUDOS" ){
+      var studyCategorie = studyCategorie + 1;
+      console.log(studyCategorie);
+    }
+    if(tasks[x].categoria == "PESSOAL" ){
+      var personalCategorie = personalCategorie + 1;
+      console.log(personalCategorie);
+    }
+    if(tasks[x].categoria == "OUTROS" ){
+      var othersCategorie = othersCategorie + 1;
+      console.log(othersCategorie);
+    }
+  }
+
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
+        data: [workCategorie, studyCategorie , personalCategorie , othersCategorie],
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
@@ -58,7 +85,7 @@ const UsersByDevice = props => {
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Work', 'Study', 'Personal' , 'Others']
   };
 
   const options = {
@@ -85,21 +112,27 @@ const UsersByDevice = props => {
 
   const devices = [
     {
-      title: 'Desktop',
-      value: '63',
-      icon: <LaptopMacIcon />,
+      title: 'Work',
+      value: workCategorie,
+      icon: <WorkIcon />,
       color: theme.palette.primary.main
     },
     {
-      title: 'Tablet',
-      value: '15',
-      icon: <TabletMacIcon />,
+      title: 'Study',
+      value: studyCategorie,
+      icon: <BookIcon />,
       color: theme.palette.error.main
     },
     {
-      title: 'Mobile',
-      value: '23',
-      icon: <PhoneIphoneIcon />,
+      title: 'Personal',
+      value: personalCategorie,
+      icon: <AssignmentIndIcon />,
+      color: theme.palette.warning.main
+    },
+    {
+      title: 'Others',
+      value: othersCategorie,
+      icon: <CloudIcon />,
       color: theme.palette.warning.main
     }
   ];
@@ -115,7 +148,7 @@ const UsersByDevice = props => {
             <RefreshIcon />
           </IconButton>
         }
-        title="Users By Device"
+        title="Total Tasks By Categorie"
       />
       <Divider />
       <CardContent>
@@ -137,7 +170,7 @@ const UsersByDevice = props => {
                 style={{ color: device.color }}
                 variant="h2"
               >
-                {device.value}%
+                {device.value}
               </Typography>
             </div>
           ))}
@@ -148,7 +181,8 @@ const UsersByDevice = props => {
 };
 
 UsersByDevice.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  tasks: PropTypes.array.isRequired
 };
 
 export default UsersByDevice;

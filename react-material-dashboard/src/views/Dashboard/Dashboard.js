@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState , useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
+import axios from 'axios';
 
 import {
   Budget,
@@ -19,8 +20,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const API_URL = 'https://minhastarefas-api.herokuapp.com/tarefas';
+const headers = { 'x-tenant-id' : 'eduardo@gmail.com' }; 
+
 const Dashboard = () => {
+
   const classes = useStyles();
+
+  const [tasks , setTasks] = useState([]);
+
+  const listTasks = () => {
+    axios.get(API_URL , {
+      headers : headers
+    }).then(response => {
+      const listOfTasks = response.data
+      console.log(listOfTasks)
+      setTasks(listOfTasks)
+    }).catch( error =>{
+      console.log(error)
+    } )
+  }
+
+  useEffect(() => {
+    listTasks();
+  }, [] )
 
   return (
     <div className={classes.root}>
@@ -35,7 +58,7 @@ const Dashboard = () => {
           xl={3}
           xs={12}
         >
-          <Budget />
+          <Budget tasks={tasks}/>
         </Grid>
         <Grid
           item
@@ -80,7 +103,7 @@ const Dashboard = () => {
           xl={3}
           xs={12}
         >
-          <UsersByDevice />
+          <UsersByDevice tasks={tasks}/>
         </Grid>
         <Grid
           item

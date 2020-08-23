@@ -25,12 +25,21 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   importButton: {
+    marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
     marginRight: theme.spacing(1)
   },
   exportButton: {
     marginRight: theme.spacing(1)
   },
   searchInput: {
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(1)
+  },
+  dropDown: {
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1)
   }
 }));
@@ -49,7 +58,16 @@ const TasksToolbar = props => {
       descricao : description, 
       categoria : category
     }
-    props.save(task)
+    if(task.categoria ==""){
+      console.log("no categorie")
+    }else if(task.descricao ==""){
+      console.log("no description")
+    }else{
+      props.save(task)
+      setDescription('')
+      setCategory('')
+    }
+    
     //console.log( ` values: description - ${description} , category - ${category} ` )
   }
 
@@ -74,8 +92,8 @@ const TasksToolbar = props => {
             />
           </Grid> 
           <Grid item md={4} sm={12} xs={12}>
-            <FormControl fullWidth>
-              <InputLabel> Categorie </InputLabel>
+            <FormControl className={classes.dropDown} fullWidth>
+              <InputLabel > Categorie </InputLabel>
               <Select value={category} onChange = { event => setCategory(event.target.value) }>
                 <MenuItem value="">Select...</MenuItem>
                 <MenuItem value={"TRABALHO"}> Work </MenuItem>
@@ -86,7 +104,7 @@ const TasksToolbar = props => {
             </FormControl>
           </Grid>
           <Grid item md={2} sm={12} xs={12}>
-            <Button  onClick={submit} variant="contained" color="secondary"> Add </Button>
+            <Button className={classes.importButton} onClick={submit} variant="contained" color="secondary"> Add </Button>
           </Grid>
         </Grid>
       </div>

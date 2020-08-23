@@ -16,11 +16,15 @@ import {
   TableHead,
   TableRow,
   Typography,
-  TablePagination
+  TablePagination,
+  IconButton
 } from '@material-ui/core';
 
-import { getInitials } from 'helpers';
+import DeleteIcon from '@material-ui/icons/Delete';
+import TimerIcon from '@material-ui/icons/Timer';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
 
+import { getInitials } from 'helpers';
 const useStyles = makeStyles(theme => ({
   root: {},
   content: {
@@ -61,10 +65,46 @@ const TasksTable = props => {
                   <TableCell>Description</TableCell>
                   <TableCell>Categorie</TableCell>
                   <TableCell>Status</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>                
-                
               <TableBody>
+                { tasks.map( task => {
+                    return (
+                      <TableRow key={task.id}>
+                        <TableCell>{ task.id }</TableCell>
+                        <TableCell>{ task.descricao }</TableCell>
+                        <TableCell>{ task.categoria }</TableCell>
+                        <TableCell>{ task.done ? 'Concluded' : 'Pending' }</TableCell>
+                        <TableCell>
+                          { task.done ?
+                            (
+                              <DoneAllIcon/> 
+                            ) :
+                            (
+                              <IconButton onClick={ event => props.editTask(task.id) } color="secondary">
+                              { task.done ? 
+                                (
+                                  <DoneAllIcon/>
+                                ) :
+                                (
+                                  <TimerIcon/>
+                                )
+                              }
+                              </IconButton> 
+                            )  
+                            }  
+                        </TableCell>
+                        <TableCell>
+                          <IconButton onClick={ event => props.deleteTask(task.id) } color="secondary"> 
+                            <DeleteIcon/>
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+                }
               </TableBody>  
             </Table>    
           </div>
