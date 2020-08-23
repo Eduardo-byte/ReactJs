@@ -2,14 +2,20 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer } from '@material-ui/core';
+import { Divider, Drawer, IconButton  } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+
+import InputIcon from '@material-ui/icons/Input';
+
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 
 import { Profile, SidebarNav } from './components';
+
+import { withRouter } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -31,6 +37,9 @@ const useStyles = makeStyles(theme => ({
   },
   nav: {
     marginBottom: theme.spacing(2)
+  },
+  signOutButton: {
+    marginLeft: theme.spacing(1)
   }
 }));
 
@@ -39,45 +48,89 @@ const Sidebar = props => {
 
   const classes = useStyles();
 
-  const pages = [
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-      icon: <DashboardIcon />
-    },
-    {
-      title: 'Tasks',
-      href: '/tasks',
-      icon: <FormatListBulletedIcon />
-    },
-    {
-      title: 'Login',
-      href: '/login',
-      icon: <LockOpenIcon />
-    }
-  ];
+  const logout = () => {
+    localStorage.removeItem('User_logged')
+    props.history.push('/login')
+  }
 
-  return (
-    <Drawer
-      anchor="left"
-      classes={{ paper: classes.drawer }}
-      onClose={onClose}
-      open={open}
-      variant={variant}
-    >
-      <div
-        {...rest}
-        className={clsx(classes.root, className)}
+  if(localStorage.getItem('User_logged')){
+    const pages = [
+      {
+        title: 'Dashboard',
+        href: '/dashboard',
+        icon: <DashboardIcon />
+      },
+      {
+        title: 'Tasks',
+        href: '/tasks',
+        icon: <FormatListBulletedIcon />
+      },
+      {
+        title: 'logout',
+        icon: <ExitToAppIcon />
+      }
+    ];
+    return (
+      <Drawer
+        anchor="left"
+        classes={{ paper: classes.drawer }}
+        onClose={onClose}
+        open={open}
+        variant={variant}
       >
-        <Profile />
-        <Divider className={classes.divider} />
-        <SidebarNav
-          className={classes.nav}
-          pages={pages}
-        />
-      </div>
-    </Drawer>
-  );
+        <div
+          {...rest}
+          className={clsx(classes.root, className)}
+        >
+          <Profile />
+          <Divider className={classes.divider} />
+          <SidebarNav
+            className={classes.nav}
+            pages={pages}
+          />
+        </div>
+      </Drawer>
+    );
+  }else{
+    const pages = [
+      {
+        title: 'Dashboard',
+        href: '/dashboard',
+        icon: <DashboardIcon />
+      },
+      {
+        title: 'Tasks',
+        href: '/tasks',
+        icon: <FormatListBulletedIcon />
+      },
+      {
+        title: 'Login',
+        href: '/login',
+        icon: <LockOpenIcon />
+      }
+    ];
+    return (
+      <Drawer
+        anchor="left"
+        classes={{ paper: classes.drawer }}
+        onClose={onClose}
+        open={open}
+        variant={variant}
+      >
+        <div
+          {...rest}
+          className={clsx(classes.root, className)}
+        >
+          <Profile />
+          <Divider className={classes.divider} />
+          <SidebarNav
+            className={classes.nav}
+            pages={pages}
+          />
+        </div>
+      </Drawer>
+    );
+  }
 };
 
 Sidebar.propTypes = {
@@ -87,4 +140,4 @@ Sidebar.propTypes = {
   variant: PropTypes.string.isRequired
 };
 
-export default Sidebar;
+export default withRouter(Sidebar);

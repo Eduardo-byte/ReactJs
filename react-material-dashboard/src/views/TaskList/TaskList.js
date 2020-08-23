@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 
 import { TasksToolbar, TasksTable } from './components';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom'
 
 import {
   Button,
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 const API_URL = 'https://minhastarefas-api.herokuapp.com/tarefas';
 //const headers = { 'x-tenant-id' : 'eduardo@gmail.com' }; 
 
-const TaskList = () => {
+const TaskList = props => {
   const classes = useStyles();
 
   const [tasks , setTasks] = useState([]);
@@ -50,9 +51,15 @@ const TaskList = () => {
     axios.get(API_URL , {
       headers : { 'x-tenant-id' : localStorage.getItem('User_logged') }
     }).then(response => {
-      const listOfTasks = response.data
-      console.log(listOfTasks)
-      setTasks(listOfTasks)
+      if(localStorage.getItem('User_logged')){
+        const listOfTasks = response.data
+        console.log(listOfTasks)
+        setTasks(listOfTasks)
+      }else{
+      setMessage('Please login before access tasks')
+      setOpenDialog(true)
+      }
+     
     }).catch( error =>{
       setMessage('Error Ocurred' , error)
       setOpenDialog(true)
@@ -91,12 +98,21 @@ const TaskList = () => {
       setTasks(list);
       setMessage('Task Succefully Deleted')
       setOpenDialog(true)
+      console.log(localStorage.getItem('User_logged'))
       //console.log(response)
     }).catch( error =>{
       setMessage('Error Ocurred' , error)
       setOpenDialog(true)
       //console.log(error)
     })
+  }
+
+  const checkLogin = () =>{
+    if(localStorage.getItem('User_logged')){
+      setOpenDialog(false)
+    }else{
+      props.history.push('/login')
+    }
   }
 
   useEffect(() => {
@@ -115,11 +131,11 @@ const TaskList = () => {
           {message}
         </DialogContent>
         <DialogActions>
-          <Button onClick={ event => setOpenDialog(false) }>Close</Button>
+          <Button onClick={ checkLogin }>Close</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
 
-export default TaskList;
+export default withRouter(TaskList);

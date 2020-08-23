@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
 
+import { withRouter } from 'react-router-dom'
+
 const useStyles = makeStyles(theme => ({
   root: {},
   item: {
@@ -54,6 +56,12 @@ const SidebarNav = props => {
 
   const classes = useStyles();
 
+
+  const logout = () => {
+    localStorage.removeItem('User_logged')
+    props.history.push('/login')
+  }
+
   return (
     <List
       {...rest}
@@ -65,15 +73,30 @@ const SidebarNav = props => {
           disableGutters
           key={page.title}
         >
-          <Button
-            activeClassName={classes.active}
-            className={classes.button}
-            component={CustomRouterLink}
-            to={page.href}
-          >
-            <div className={classes.icon}>{page.icon}</div>
-            {page.title}
-          </Button>
+         {
+           page.title === 'logout' ? 
+           (
+              <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                component={CustomRouterLink}
+                onClick = {logout}
+              >
+                <div className={classes.icon}>{page.icon}</div>
+              {page.title}
+              </Button>
+           ): (
+              <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                component={CustomRouterLink}
+                to={page.href}
+              >
+                <div className={classes.icon}>{page.icon}</div>
+                {page.title}
+            </Button>
+           )
+         } 
         </ListItem>
       ))}
     </List>
@@ -85,4 +108,4 @@ SidebarNav.propTypes = {
   pages: PropTypes.array.isRequired
 };
 
-export default SidebarNav;
+export default withRouter(SidebarNav);
