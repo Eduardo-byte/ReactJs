@@ -78,7 +78,8 @@ const UsersByDevice = props => {
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
-          theme.palette.warning.main
+          theme.palette.warning.main,
+          theme.palette.success.main
         ],
         borderWidth: 8,
         borderColor: theme.palette.white,
@@ -90,7 +91,7 @@ const UsersByDevice = props => {
 
   const options = {
     legend: {
-      display: false
+      display: true
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -100,7 +101,7 @@ const UsersByDevice = props => {
     tooltips: {
       enabled: true,
       mode: 'index',
-      intersect: false,
+      intersect: true,
       borderWidth: 1,
       borderColor: theme.palette.divider,
       backgroundColor: theme.palette.white,
@@ -133,7 +134,7 @@ const UsersByDevice = props => {
       title: 'Others',
       value: othersCategorie,
       icon: <CloudIcon />,
-      color: theme.palette.warning.main
+      color: theme.palette.success.main
     }
   ];
 
